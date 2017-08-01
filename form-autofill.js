@@ -1,24 +1,35 @@
 window.formAutofill = (function ($) {
 
     var params = {},
-        getParams = function () {
-            var uri = decodeURI(location.search.substr(1));
-            var chunks = uri.split('&');
-            var params = Object();
+        getParams = function ( source ) {
+            source = source || false;
+            // source can be either hash or search, hash for url/#aap=noot&mies=wim or search for url/?aap=noot&mies=wim
+            // hash method is introduced for WordPress which has a SHITLOAD of reserved URL-parameters.
+            if (false === source) {
+                return jQuery.extend(true, {}, getParams('search'), getParams('hash'));
+            }
+
+            if (source !== 'hash') source = 'search';
+
+            var uri = decodeURI(location[source].substr(1)),
+                chunks = uri.split('&'),
+                params = {};
 
             for (var i = 0; i < chunks.length; i++) {
                 var chunk = chunks[i].split('=');
-                if (chunk[0].search("\\[\\]") !== -1) {
-                    if (typeof params[chunk[0]] === 'undefined') {
-                        params[chunk[0]] = [chunk[1]];
+                if (chunk[0] !== "") {
+                    if (chunk[0].search("\\[\\]") !== -1) {
+                        if (typeof params[chunk[0]] === 'undefined') {
+                            params[chunk[0]] = [chunk[1]];
+
+                        } else {
+                            params[chunk[0]].push(chunk[1]);
+                        }
+
 
                     } else {
-                        params[chunk[0]].push(chunk[1]);
+                        params[chunk[0]] = chunk[1];
                     }
-
-
-                } else {
-                    params[chunk[0]] = chunk[1];
                 }
             }
 
@@ -26,6 +37,7 @@ window.formAutofill = (function ($) {
         },
         init = function () {
             reset();
+            params = getParams();
             fillText();
             fillSelect();
             fillTextArea();
@@ -34,7 +46,6 @@ window.formAutofill = (function ($) {
         },
         reset = function () {
             $(".urlFilled").removeClass('urlFilled');
-            params = getParams();
         },
         fillText = function () {
             $.each(params, function (key, value) {
@@ -145,7 +156,7 @@ window.formAutofill = (function ($) {
             });
         };
     return {
-        init: init
+        init: init, getParams: getParams
     }
 
 })(jQuery);
