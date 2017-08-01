@@ -1,4 +1,4 @@
-window.cf7prefill = (function ($) {
+window.formAutofill = (function ($) {
 
     var params = {},
         getParams = function () {
@@ -44,7 +44,7 @@ window.cf7prefill = (function ($) {
                         if (!$(this).is('.urlFilled')) {
                             if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                                 // single
-                                console.log('setting', fts[ft], key, 'to', value);
+                                // console.log('setting', fts[ft], key, 'to', value);
                                 $(this).val(value);
                                 $(this).addClass('urlFilled');
                             }
@@ -66,7 +66,7 @@ window.cf7prefill = (function ($) {
                     if (!$(this).is('.urlFilled')) {
                         if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                             // single
-                            console.log('setting', 'select', key, 'to', value);
+                            // console.log('setting', 'select', key, 'to', value);
                             $(this).val(value);
                             $(this).addClass('urlFilled');
                         }
@@ -87,7 +87,7 @@ window.cf7prefill = (function ($) {
                     if (!$(this).is('.urlFilled')) {
                         if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                             // single
-                            console.log('setting', 'textarea', key, 'to', value);
+                            // console.log('setting', 'textarea', key, 'to', value);
                             $(this).val(value);
                             $(this).addClass('urlFilled');
                         }
@@ -108,7 +108,7 @@ window.cf7prefill = (function ($) {
                     if (!$(this).is('.urlFilled')) {
                         if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                             // single
-                            console.log('setting', 'checkbox', key, 'to', value);
+                            // console.log('setting', 'checkbox', key, 'to', value);
                             $(this).prop('checked', $(this).val() === value);
                             $(this).addClass('urlFilled');
                         }
@@ -133,7 +133,7 @@ window.cf7prefill = (function ($) {
                     if (!$(this).is('.urlFilled')) {
                         if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                             // single
-                            console.log('setting', 'radio', key, 'to', value);
+                            // console.log('setting', 'radio', key, 'to', value);
                             $("input[type=radio][name='" + $(this).attr('name') + "']").each(function (i) {
                                 if ($(this).val() === value) {
                                     $(this).prop('checked', true);
@@ -145,6 +145,11 @@ window.cf7prefill = (function ($) {
             });
         };
     return {
-        init: init, params: params
+        init: init
     }
-})(jQuery).init();
+
+})(jQuery);
+
+jQuery(document).ready(function(){
+    formAutofill.init();
+});
