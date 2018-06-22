@@ -51,7 +51,7 @@ window.formAutofill = (function ($) {
             $.each(params, function (key, value) {
                 var fts = ['text', 'email', 'tel', 'phone'];
                 for (ft in fts) {
-                    $("input[type=" + fts[ft] + "]").each(function () {
+                    $("input[type='" + fts[ft] + "']").each(function () {
                         if (!$(this).is('.urlFilled')) {
                             if ($(this).attr('name') == key && !key.match(/\[\]$/)) {
                                 // single
@@ -62,7 +62,7 @@ window.formAutofill = (function ($) {
                             else if ($(this).attr('name') == key + "[]" || ( $(this).attr('name').match(/\[.*\]$/) && key.match(/\[.*\]$/) ) ) {
                                 // multi
                                 if (typeof [] !== typeof value) value = [ value ];
-                                $("input[type=" + fts[ft] + "][name='" + $(this).attr('name') + "']").each(function (i) {
+                                $("input[type='" + fts[ft] + "'][name='" + $(this).attr('name') + "']").each(function (i) {
                                     $(this).val(value[i] || '');
                                 }).addClass('urlFilled');
                             }
